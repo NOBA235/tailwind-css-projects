@@ -8,9 +8,15 @@
   <style>
     :root {
       --primary: #2563eb;
+      --primary-dark: #1d4ed8;
       --text: #1e293b;
+      --text-light: #64748b;
       --bg: #ffffff;
+      --bg-light: #f8fafc;
       --shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+      --radius: 8px;
+      --transition: all 0.3s ease;
     }
 
     * {
@@ -23,6 +29,7 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       background: #f1f5f9;
       color: var(--text);
+      line-height: 1.6;
     }
 
     /* ================= HEADER ================= */
@@ -43,6 +50,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: relative;
     }
 
     /* ================= LOGO ================= */
@@ -51,6 +59,9 @@
       font-size: 1.5rem;
       font-weight: 700;
       color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
     }
 
     .logo span {
@@ -61,34 +72,154 @@
     .desktop-nav {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
+      gap: 2rem;
     }
 
     .nav-links {
       list-style: none;
       display: flex;
       gap: 1.5rem;
+      align-items: center;
     }
 
     .nav-links a {
       text-decoration: none;
       color: var(--text);
       font-weight: 500;
+      padding: 0.5rem 0;
+      position: relative;
+      transition: var(--transition);
     }
 
-    .nav-links a.active,
     .nav-links a:hover {
       color: var(--primary);
     }
 
+    .nav-links a.active {
+      color: var(--primary);
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    /* ================= DROPDOWN ================= */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      padding: 0.5rem 0;
+      transition: var(--transition);
+    }
+
+    .dropdown-toggle:hover {
+      color: var(--primary);
+    }
+
+    .dropdown-toggle i {
+      font-size: 0.875rem;
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown-toggle.active i {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: -1rem;
+      background: var(--bg);
+      min-width: 220px;
+      box-shadow: var(--shadow-lg);
+      border-radius: var(--radius);
+      padding: 0.75rem 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: var(--transition);
+      z-index: 100;
+    }
+
+    .dropdown-menu.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-menu::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 2rem;
+      width: 16px;
+      height: 16px;
+      background: var(--bg);
+      transform: rotate(45deg);
+      box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .dropdown-menu li {
+      list-style: none;
+    }
+
+    .dropdown-menu a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+    }
+
+    .dropdown-menu a:hover {
+      background: var(--bg-light);
+      color: var(--primary);
+      border-left-color: var(--primary);
+    }
+
+    .dropdown-menu i {
+      color: var(--primary);
+      font-size: 1rem;
+      width: 20px;
+    }
+
+    /* ================= CTA BUTTON ================= */
     .cta-button {
-      padding: 0.5rem 1.2rem;
+      padding: 0.6rem 1.5rem;
       background: var(--primary);
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--radius);
       font-weight: 600;
       cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .cta-button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
     }
 
     /* ================= HAMBURGER ================= */
@@ -99,6 +230,7 @@
       cursor: pointer;
       width: 40px;
       height: 40px;
+      padding: 0.5rem;
     }
 
     .hamburger-box {
@@ -116,7 +248,7 @@
       background: var(--text);
       position: absolute;
       left: 0;
-      transition: all 0.3s ease;
+      transition: var(--transition);
     }
 
     .hamburger-inner {
@@ -159,6 +291,8 @@
       background: white;
       padding: 1.5rem;
       box-shadow: var(--shadow);
+      max-height: calc(100vh - 70px);
+      overflow-y: auto;
     }
 
     .mobile-nav.active {
@@ -176,11 +310,70 @@
       color: var(--text);
       border-bottom: 1px solid #e2e8f0;
       font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .mobile-nav a:hover {
+      color: var(--primary);
     }
 
     .mobile-nav a.active {
       color: var(--primary);
       font-weight: 600;
+    }
+
+    /* Mobile dropdown */
+    .mobile-dropdown {
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .mobile-dropdown-toggle {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .mobile-dropdown-toggle i {
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-dropdown-toggle.active i {
+      transform: rotate(180deg);
+    }
+
+    .mobile-dropdown-menu {
+      padding-left: 1rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .mobile-dropdown-menu.active {
+      max-height: 300px;
+    }
+
+    .mobile-dropdown-menu a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .mobile-dropdown-menu i {
+      color: var(--primary);
+      font-size: 1rem;
+      width: 20px;
     }
 
     .mobile-nav .cta-button {
@@ -199,13 +392,43 @@
       }
     }
 
+    /* ================= MAIN CONTENT ================= */
     main {
       margin-top: 100px;
       padding: 2rem;
       max-width: 800px;
       margin-inline: auto;
     }
+
+    main h1 {
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    main p {
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ================= KEYFRAMES ================= */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .dropdown-menu.active {
+      animation: fadeIn 0.3s ease forwards;
+    }
   </style>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -215,10 +438,24 @@
 
       <a href="#" class="logo">&lt;/&gt; Dev<span>Stack</span></a>
 
-      <nav class="desktop-nav">
+      <nav class="desktop-nav" aria-label="Main navigation">
         <ul class="nav-links">
           <li><a href="#" class="active">Home</a></li>
-          <li><a href="#">Services</a></li>
+          
+          <!-- Services Dropdown -->
+          <li class="dropdown">
+            <button class="dropdown-toggle" id="services-dropdown">
+              Services <i class="fas fa-chevron-down"></i>
+            </button>
+            <ul class="dropdown-menu" id="services-menu" aria-labelledby="services-dropdown">
+              <li><a href="#"><i class="fas fa-laptop-code"></i> Web Development</a></li>
+              <li><a href="#"><i class="fas fa-mobile-alt"></i> Mobile Apps</a></li>
+              <li><a href="#"><i class="fas fa-paint-brush"></i> UI/UX Design</a></li>
+              <li><a href="#"><i class="fas fa-chart-line"></i> Digital Marketing</a></li>
+              <li><a href="#"><i class="fas fa-cloud"></i> Cloud Solutions</a></li>
+            </ul>
+          </li>
+          
           <li><a href="#">Portfolio</a></li>
           <li><a href="#">Contact</a></li>
         </ul>
@@ -241,7 +478,21 @@
     <nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
       <ul>
         <li><a href="#" class="active">Home</a></li>
-        <li><a href="#">Services</a></li>
+        
+        <!-- Mobile Services Dropdown -->
+        <li class="mobile-dropdown">
+          <button class="mobile-dropdown-toggle" id="mobile-services-toggle">
+            Services <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="mobile-dropdown-menu" id="mobile-services-menu">
+            <a href="#"><i class="fas fa-laptop-code"></i> Web Development</a>
+            <a href="#"><i class="fas fa-mobile-alt"></i> Mobile Apps</a>
+            <a href="#"><i class="fas fa-paint-brush"></i> UI/UX Design</a>
+            <a href="#"><i class="fas fa-chart-line"></i> Digital Marketing</a>
+            <a href="#"><i class="fas fa-cloud"></i> Cloud Solutions</a>
+          </div>
+        </li>
+        
         <li><a href="#">Portfolio</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
@@ -250,20 +501,88 @@
   </header>
 
   <main>
-    <h1>Responsive Navbar</h1>
-    <p>Resize the screen and click the hamburger icon.</p>
+    <h1>Responsive Navbar with Dropdown</h1>
+    <p>Resize the screen to see responsive behavior. Hover over "Services" on desktop or tap it on mobile to see the dropdown menu.</p>
+    
+    <div style="background: white; padding: 2rem; border-radius: var(--radius); margin-top: 2rem; box-shadow: var(--shadow);">
+      <h3>Features added:</h3>
+      <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+        <li>Enhanced dropdown menu with icons</li>
+        <li>Mobile-friendly dropdown with smooth animations</li>
+        <li>Improved visual design and hover effects</li>
+        <li>Better accessibility attributes</li>
+        <li>Smooth transitions and animations</li>
+        <li>Active state indicators</li>
+      </ul>
+    </div>
   </main>
 
   <script>
     const hamburger = document.getElementById("hamburger");
     const mobileNav = document.getElementById("mobile-nav");
+    
+    // Desktop dropdown
+    const servicesDropdown = document.getElementById("services-dropdown");
+    const servicesMenu = document.getElementById("services-menu");
+    
+    // Mobile dropdown
+    const mobileServicesToggle = document.getElementById("mobile-services-toggle");
+    const mobileServicesMenu = document.getElementById("mobile-services-menu");
 
+    // Toggle mobile menu
     hamburger.addEventListener("click", () => {
       const isOpen = hamburger.classList.toggle("active");
-
       hamburger.setAttribute("aria-expanded", isOpen);
       mobileNav.classList.toggle("active");
       mobileNav.setAttribute("aria-hidden", !isOpen);
+    });
+
+    // Desktop dropdown toggle
+    servicesDropdown.addEventListener("click", (e) => {
+      e.stopPropagation();
+      servicesDropdown.classList.toggle("active");
+      servicesMenu.classList.toggle("active");
+    });
+
+    // Mobile dropdown toggle
+    mobileServicesToggle.addEventListener("click", () => {
+      mobileServicesToggle.classList.toggle("active");
+      mobileServicesMenu.classList.toggle("active");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      // Close desktop dropdown
+      if (!servicesDropdown.contains(e.target) && !servicesMenu.contains(e.target)) {
+        servicesDropdown.classList.remove("active");
+        servicesMenu.classList.remove("active");
+      }
+    });
+
+    // Close dropdown on escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        servicesDropdown.classList.remove("active");
+        servicesMenu.classList.remove("active");
+        
+        mobileServicesToggle.classList.remove("active");
+        mobileServicesMenu.classList.remove("active");
+      }
+    });
+
+    // Close mobile menu when clicking a link
+    const mobileLinks = document.querySelectorAll('.mobile-nav a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove("active");
+        hamburger.setAttribute("aria-expanded", "false");
+        mobileNav.classList.remove("active");
+        mobileNav.setAttribute("aria-hidden", "true");
+        
+        // Also close mobile dropdown
+        mobileServicesToggle.classList.remove("active");
+        mobileServicesMenu.classList.remove("active");
+      });
     });
   </script>
 
